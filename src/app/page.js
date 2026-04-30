@@ -1,65 +1,181 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+
+const getImage = (name) => {
+  const images = {
+    "Asus Vivobook 15":
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06576857.png",
+    "HP Pavilion 14":
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06576857.png",
+    "Lenovo ThinkPad E14":
+      "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06576857.png"
+  };
+
+  return images[name] || "https://via.placeholder.com/150";
+};
 
 export default function Home() {
+
+  const [weights, setWeights] = useState({
+    price: 0.4,
+    performance: 0.3,
+    battery: 0.2,
+    rating: 0.1
+  });
+
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (key, value) => {
+    setWeights({ ...weights, [key]: parseFloat(value) });
+  };
+
+  const getRecommendation = async () => {
+    setLoading(true);
+
+    const res = await fetch("http://127.0.0.1:8000/recommendations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ weights })
+    });
+
+    const data = await res.json();
+    setResult(data);
+    setLoading(false);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="min-h-screen bg-gray-50 p-10">
+
+      <h1 className="text-3xl font-bold mb-6">
+        ClariCart.ai
+      </h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        {/* LEFT PANEL */}
+        <div className="bg-white p-6 rounded-xl shadow">
+
+          <h2 className="text-lg font-semibold mb-4">
+            Preferences
+          </h2>
+
+          {Object.keys(weights).map((key) => (
+            <div key={key} className="mb-4">
+              <label className="block text-sm capitalize">
+                {key}: {weights[key]}
+              </label>
+
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={weights[key]}
+                onChange={(e) => handleChange(key, e.target.value)}
+                className="w-full"
+              />
+            </div>
+          ))}
+
+          <button
+            onClick={getRecommendation}
+            className="w-full mt-4 bg-black text-white py-2 rounded-lg"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            {loading ? "Loading..." : "Get Recommendation"}
+          </button>
+
         </div>
-      </main>
-    </div>
+
+        {/* RIGHT PANEL */}
+        <div className="md:col-span-2">
+
+          {!result && (
+            <p className="text-gray-500 mt-20 text-center">
+              Adjust preferences and click button
+            </p>
+          )}
+
+          {result && (
+            <div>
+
+              {/* TOP RECOMMENDATION */}
+              <div className="bg-white p-6 rounded-2xl shadow-lg mb-6 border border-gray-100 hover:shadow-xl transition">
+
+                <div className="flex items-center gap-4 mb-2">
+
+                  <img
+                    src={getImage(result.top_recommendation.name)}
+                    className="w-24 h-24 object-cover rounded"
+                  />
+
+                  <div>
+                    <h2 className="text-xl font-bold">
+                      🏆 {result.top_recommendation.name}
+                    </h2>
+
+                    <p className="text-green-600 text-sm font-medium">
+                      ✔ Best Match for You
+                    </p>
+                  </div>
+
+                </div>
+
+                <p className="text-sm text-gray-500">
+                  {result.top_recommendation.best_for} • {result.top_recommendation.confidence}
+                </p>
+
+                <p className="mt-2 font-medium">
+                  {result.top_recommendation.decision_summary}
+                </p>
+
+                <p className="text-sm text-gray-600 mt-1">
+                  {result.top_recommendation.tradeoff_vs_next}
+                </p>
+
+                <div className="bg-gray-50 p-3 rounded mt-3 whitespace-pre-line text-sm">
+                  {result.top_recommendation.explanation}
+                </div>
+
+              </div>
+
+              {/* ALTERNATIVES */}
+              <h3 className="font-semibold mb-2">
+                Alternatives
+              </h3>
+
+              {result.alternatives.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white p-4 rounded shadow mb-3"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+
+                    <img
+                      src={getImage(item.name)}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+
+                    <h4 className="font-medium">
+                      {item.name}
+                    </h4>
+
+                  </div>
+
+                  <p className="text-sm whitespace-pre-line">
+                    {item.explanation}
+                  </p>
+                </div>
+              ))}
+
+            </div>
+          )}
+
+        </div>
+
+      </div>
+    </main>
   );
 }
