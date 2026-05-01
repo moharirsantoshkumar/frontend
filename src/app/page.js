@@ -84,7 +84,26 @@ export default function Home() {
             onClick={getRecommendation}
             className="w-full mt-4 bg-black text-white py-2 rounded-lg"
           >
-            {loading ? "Loading..." : "Get Recommendation"}
+            {loading && (
+              <div className="text-center mt-16 space-y-3">
+                <div className="text-lg font-medium text-gray-800">
+                  🔍 Analyzing your preferences
+                </div>
+
+                <div className="text-sm text-gray-500">
+                  Comparing laptops across multiple factors…
+                </div>
+
+                <div className="text-xs text-gray-400">
+                  First request may take up to 30 seconds
+                </div>
+                
+                <div className="flex justify-center mt-4">
+                  <div className="w-6 h-6 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                </div>
+
+              </div>
+            )}
           </button>
 
         </div>
