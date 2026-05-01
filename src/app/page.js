@@ -33,7 +33,7 @@ export default function Home() {
   const getRecommendation = async () => {
     setLoading(true);
 
-    const res = await fetch("http://127.0.0.1:8000/recommendations", {
+    const res = await fetch("https://backend-mm9y.onrender.com/recommendations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
