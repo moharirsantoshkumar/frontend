@@ -81,10 +81,12 @@ export default function Home() {
           ))}
 
           <button
-            onClick={getRecommendation}
-            className="w-full mt-4 bg-black text-white py-2 rounded-lg"
-          >
-            {loading && (
+              onClick={getRecommendation}
+              className="w-full mt-4 bg-black text-white py-2 rounded-lg font-semibold"
+            >
+              {loading ? "Analyzing..." : "Get Recommendations"}
+            </button>
+          {loading && (
               <div className="text-center mt-16 space-y-3">
                 <div className="text-lg font-medium text-gray-800">
                   🔍 Analyzing your preferences
@@ -97,37 +99,24 @@ export default function Home() {
                 <div className="text-xs text-gray-400">
                   First request may take up to 30 seconds
                 </div>
-
+                
                 <div className="flex justify-center mt-4">
                   <div className="w-6 h-6 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
                 </div>
 
               </div>
             )}
-          </button>
 
         </div>
 
         {/* RIGHT PANEL */}
         <div className="md:col-span-2">
 
-          {!result && !loading && (
-              <div className="text-center mt-20 space-y-3">
-
-                <div className="text-lg font-medium text-gray-800">
-                  🎯 Find your perfect laptop
-                </div>
-
-                <div className="text-sm text-gray-500">
-                  Adjust your preferences and click below
-                </div>
-
-                <div className="text-xs text-gray-400">
-                  Get personalized recommendations powered by AI
-                </div>
-
-              </div>
-            )}
+          {!result && (
+            <p className="text-gray-800 mt-20 text-center">
+              Adjust preferences and click button
+            </p>
+          )}
 
           {result && (
             <div>
