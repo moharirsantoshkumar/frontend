@@ -93,7 +93,7 @@ export default function Home() {
         <div className="md:col-span-2">
 
           {!result && (
-            <p className="text-gray-500 mt-20 text-center">
+            <p className="text-black-500 mt-20 text-center">
               Adjust preferences and click button
             </p>
           )}
@@ -123,7 +123,7 @@ export default function Home() {
 
                 </div>
 
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-black-500">
                   {result.top_recommendation.best_for} • {result.top_recommendation.confidence}
                 </p>
 
@@ -131,7 +131,7 @@ export default function Home() {
                   {result.top_recommendation.decision_summary}
                 </p>
 
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-black-600 mt-1">
                   {result.top_recommendation.tradeoff_vs_next}
                 </p>
 
