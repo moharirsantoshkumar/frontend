@@ -17,10 +17,11 @@ const getImage = (name) => {
 export default function Home() {
 
   const [weights, setWeights] = useState({
-    price: 0.4,
-    performance: 0.3,
-    battery: 0.2,
-    rating: 0.1
+    "Price sensitivity": 0.5,
+    "Delivery speed": 0.2,
+    "Sustainability": 0.2,
+    "Review depth": 0.1,
+    "Brand trust": 0.3
   });
 
   const [result, setResult] = useState(null);
