@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ResultsPage() {
 
   const [result, setResult] = useState(null);
+  const router = useRouter();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [filters, setFilters] = useState({
     priceRange: [0, 100000]   // safe default
@@ -67,7 +70,7 @@ export default function ResultsPage() {
 
           {/* SEARCH BAR */}
           <div className="flex-1 flex items-center bg-gray-100 rounded-md px-2 md:px-3 py-1.5">
-            <span className="text-gray-400 text-sm mr-2">🔍</span>
+            <span className="Black text-sm mr-2">🔍</span>
             <input
               type="text"
               placeholder="Search products..."
@@ -86,15 +89,34 @@ export default function ResultsPage() {
           </div>
 
         </div>
+
+      {isDrawerOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
+            onClick={() => setIsDrawerOpen(false)}
+          />
+        )}
       {/* MAIN */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 p-4 md:p-6">
 
         {/* SIDEBAR */}
-        <div className="md:col-span-3 bg-white p-4 rounded-xl shadow-sm space-y-6 text-sm">
+        <div
+            className={`
+              fixed top-0 right-0 h-full w-3/4 max-w-sm bg-white z-50 p-4 space-y-6
+              transform transition-transform duration-300
+              ${isDrawerOpen ? "translate-x-0" : "translate-x-full"}
+              md:static md:translate-x-0 md:col-span-3 md:h-auto md:w-auto md:z-auto
+            `}
+          >
+          
+          <div className="md:hidden flex justify-between items-center mb-4">
+            <h3 className="font-semibold">Filters</h3>
+            <button onClick={() => setIsDrawerOpen(false)}>✕</button>
+          </div>
 
           {/* CATEGORY */}
           <div>
-            <p className="text-xs uppercase text-gray-400 mb-2">Category</p>
+            <p className="text-xs uppercase Black mb-2">Category</p>
 
             <div className="space-y-1">
               <div className="flex justify-between px-3 py-1.5 rounded bg-green-100 text-green-700 font-medium cursor-pointer">
@@ -104,14 +126,14 @@ export default function ResultsPage() {
 
               <div className="flex justify-between px-3 py-1.5 rounded hover:bg-gray-100 cursor-pointer">
                 <span>Tablets</span>
-                <span className="text-xs text-gray-400">6</span>
+                <span className="text-xs Black">6</span>
               </div>
             </div>
           </div>
 
           {/* PRICE RANGE */}
           <div>
-            <p className="text-xs uppercase text-gray-400 mb-2">Price range</p>
+            <p className="text-xs uppercase Black mb-2">Price range</p>
 
             <div className="flex justify-between text-xs mb-1">
               <span>₹{filters.priceRange?.[0]}</span>
@@ -151,12 +173,12 @@ export default function ResultsPage() {
 
           {/* DELIVERY */}
           <div>
-            <p className="text-xs uppercase text-gray-400 mb-2">Delivery</p>
+            <p className="text-xs uppercase Black mb-2">Delivery</p>
 
             <div className="space-y-1">
               <div className="flex justify-between px-3 py-1.5 rounded hover:bg-gray-100 cursor-pointer">
                 <span>Same day</span>
-                <span className="text-xs text-gray-400">3</span>
+                <span className="text-xs Black">3</span>
               </div>
 
               <div className="flex justify-between px-3 py-1.5 rounded bg-green-100 text-green-700 font-medium cursor-pointer">
@@ -168,7 +190,7 @@ export default function ResultsPage() {
 
           {/* SMART SCORE */}
           <div>
-            <p className="text-xs uppercase text-gray-400 mb-2">SmartScore</p>
+            <p className="text-xs uppercase Black mb-2">SmartScore</p>
 
             <div className="space-y-1">
               <div className="flex justify-between px-3 py-1.5 rounded bg-green-100 text-green-700 font-medium cursor-pointer">
@@ -178,14 +200,14 @@ export default function ResultsPage() {
 
               <div className="flex justify-between px-3 py-1.5 rounded hover:bg-gray-100 cursor-pointer">
                 <span>80–89</span>
-                <span className="text-xs text-gray-400">5</span>
+                <span className="text-xs Black">5</span>
               </div>
             </div>
           </div>
 
           {/* YOUR WEIGHTS */}
           <div>
-            <p className="text-xs uppercase text-gray-400 mb-2">Your active weights</p>
+            <p className="text-xs uppercase Black mb-2">Your active weights</p>
 
             {[
               { name: "Price", value: 78 },
@@ -206,9 +228,22 @@ export default function ResultsPage() {
               </div>
             ))}
 
-            <p className="text-xs text-green-600 mt-2 cursor-pointer">
-              Edit preferences →
-            </p>
+            <p
+                onClick={() => router.push("/onboarding")}
+                className="text-xs text-green-600 mt-2 cursor-pointer hover:underline"
+              >
+                Edit preferences →
+              </p>
+          </div>
+
+          {/* APPLY BUTTON (mobile only) */}
+          <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg">
+            <button
+              onClick={() => setIsDrawerOpen(false)}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md"
+            >
+              Apply Filters
+            </button>
           </div>
 
         </div>
@@ -240,6 +275,15 @@ export default function ResultsPage() {
               <span className="ml-auto text-xs text-green-600 font-medium">
                 Models agree on top pick ✓
               </span>
+            </div>
+
+            <div className="md:hidden mb-3">
+              <button
+                onClick={() => setIsDrawerOpen(true)}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md"
+              >
+                Filters
+              </button>
             </div>
 
             {/* PRODUCT GRID */}
@@ -291,10 +335,34 @@ export default function ResultsPage() {
                   </div>
 
                   {/* WHY TEXT */}
-                  <div className="text-xs bg-gray-50 rounded p-2 mb-3">
-                    <strong>Why:</strong> {item.decision_summary}
+                  <div className="text-xs bg-gray-50 rounded p-2 mb-3 leading-relaxed">
+                    <span className="font-medium text-gray-700">Why:</span>{" "}
+                    <span className="text-gray-600">
+                      {item.decision_summary ||
+                          item.explanation
+                            ?.split("\n")
+                            .filter(line => line.trim() && !line.includes("Pros") && !line.includes("Cons"))
+                            [0]
+                        }
+                    </span>
                   </div>
+                  
+                  {index === 0 && item.tradeoff_vs_next && (
+                    <div className="text-xs text-gray-600 bg-green-50 rounded p-2 mb-3 leading-relaxed">
 
+                      {/* AI Insight Label */}
+                      <div className="text-[10px] uppercase text-green-600 font-medium mb-1">
+                        AI Insight
+                      </div>
+
+                      <span className="font-medium text-green-700">
+                        Why this is better:
+                      </span>{" "}
+                      {item.tradeoff_vs_next}
+
+                    </div>
+                  )}
+                  
                   {/* BUTTONS */}
                   <div className="flex gap-2">
                     <button className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-md transition">

@@ -31,7 +31,6 @@ export default function Onboarding() {
       },
       body: JSON.stringify({ weights })
     });
-    console.log("Calling:", "https://backend-mm9y.onrender.com/recommendations");
       const data = await res.json();
 
       // store result
