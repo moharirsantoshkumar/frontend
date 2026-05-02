@@ -34,3 +34,36 @@
   border-radius: 50%;
   border: 2px solid white;
 }
+
+/* Price slider track */
+.price-slider::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+  border-radius: 2px;
+}
+
+/* Thumb */
+.price-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 12px;
+  width: 12px;
+  background: #16a34a;
+  border-radius: 50%;
+  border: 2px solid white;
+  margin-top: -4px;
+  cursor: pointer;
+}
+
+/* Firefox */
+.price-slider::-moz-range-track {
+  height: 4px;
+  background: transparent;
+}
+
+.price-slider::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+  background: #16a34a;
+  border-radius: 50%;
+  border: 2px solid white;
+}
