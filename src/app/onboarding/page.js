@@ -305,8 +305,8 @@ export default function Onboarding() {
         ))}
 
         {selectedCategory && (
-          <p className="text-sm text-green-600 mt-2">
-            Selected category: {categories.find(c => c.value === selectedCategory)?.label}
+          <p className="text-sm text-green-600 mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
+            Selected: {categories.find(c => c.value === selectedCategory)?.label}
           </p>
         )}
       </div>
