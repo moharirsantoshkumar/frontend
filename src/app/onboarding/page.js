@@ -166,7 +166,7 @@ export default function Onboarding() {
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-[calc(100vh-56px)]">
 
     {/* LEFT PANEL */}
-    <div className="p-4 md:p-10 flex flex-col justify-center">
+    <div className="p-4 md:p-10 flex flex-col justify-start">
       <p className="text-xs font-medium text-green-600 tracking-wide mb-2 uppercase">
         Step {step} of 4 · {step === 1 ? "Account" : step === 2 ? "Preferences" : "Categories"}
       </p>
@@ -179,7 +179,7 @@ export default function Onboarding() {
           : "Choose your category"}
       </h1>
 
-      <p className="text-gray-600 mb-8">
+      <p className="text-gray-600">
         Set your weights once. Every recommendation adjusts to these — across all 20 categories.
       </p>
     
