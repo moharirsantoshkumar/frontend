@@ -41,14 +41,24 @@ export default function Onboarding() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-          weights,
-          category: selectedCategory
-        })
-    });
+            weights,
+            category: selectedCategory
+          })
+      });
       const data = await res.json();
 
       // store result
       localStorage.setItem("result", JSON.stringify(data));
+      const existing = JSON.parse(localStorage.getItem("history")) || [];
+
+      const newEntry = {
+        ...data,
+        timestamp: new Date().toISOString()
+      };
+
+      const updated = [newEntry, ...existing].slice(0, 10);
+
+      localStorage.setItem("history", JSON.stringify(updated));
 
       // navigate to results page (currently homepage)
       router.push("/results");
