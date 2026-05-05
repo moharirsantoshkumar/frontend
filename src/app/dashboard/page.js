@@ -136,6 +136,8 @@ export default function Dashboard() {
                 </p>
             </div>
 
+          </div>
+
             
           {/* Categories */}
           <p className="text-xs text-gray-900 mb-2">
@@ -143,7 +145,7 @@ export default function Dashboard() {
           </p>
 
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-            {["💻", "🏠", "👟", "🏋️", "📚"].map((icon, i) => (
+            {["💻", "📱","🏠", "👟", "🏋️", "📚"].map((icon, i) => (
               <div
                 key={i}
                 className="bg-white p-4 text-center rounded border cursor-pointer"
@@ -191,7 +193,6 @@ export default function Dashboard() {
 
       </div>
 
-    </div>
     </div>
   );
 }

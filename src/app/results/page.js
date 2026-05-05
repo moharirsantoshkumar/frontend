@@ -86,6 +86,12 @@ export default function ResultsPage() {
             <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-xs font-medium text-green-700">
               SK
             </div>
+            <button
+              onClick={() => router.push("/dashboard")}
+              className="text-sm text-green-600"
+            >
+              Dashboard →
+            </button>
           </div>
 
         </div>

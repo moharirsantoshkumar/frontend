@@ -8,6 +8,7 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
   const categories = [
     { icon: "💻", value: "laptops", label: "Laptops" },
+    { icon: "📱", value: "mobiles", label: "Mobiles" },
     { icon: "🏠", value: "home", label: "Home" },
     { icon: "👟", value: "fashion", label: "Fashion" },
     { icon: "🏋️", value: "fitness", label: "Fitness" },
