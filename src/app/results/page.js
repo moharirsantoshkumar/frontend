@@ -8,6 +8,11 @@ export default function ResultsPage() {
   const [result, setResult] = useState(null);
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const categoryIcons = {
+    laptops: "💻",
+    mobiles: "📱",
+  };
 
   const [filters, setFilters] = useState({
     priceRange: [0, 100000]   // safe default
@@ -20,6 +25,11 @@ export default function ResultsPage() {
 
   useEffect(() => {
       const data = localStorage.getItem("result");
+      const savedCategory = localStorage.getItem("selectedCategory");
+
+      if (savedCategory) {
+        setSelectedCategory(savedCategory);
+      }
 
       if (data) {
         const parsed = JSON.parse(data);
@@ -126,13 +136,11 @@ export default function ResultsPage() {
 
             <div className="space-y-1">
               <div className="flex justify-between px-3 py-1.5 rounded bg-green-100 text-green-700 font-medium cursor-pointer">
-                <span>Laptops</span>
-                <span className="text-xs">14</span>
-              </div>
-
-              <div className="flex justify-between px-3 py-1.5 rounded hover:bg-gray-100 cursor-pointer">
-                <span>Tablets</span>
-                <span className="text-xs Black">6</span>
+                <span className="capitalize flex items-center gap-2">
+                  <span>{categoryIcons[selectedCategory]}</span>
+                  {selectedCategory || "Products"}
+                </span>
+                <span className="text-xs">{filteredResults.length}</span>
               </div>
             </div>
           </div>
@@ -262,7 +270,7 @@ export default function ResultsPage() {
             {/* HEADER */}
             <div className="flex justify-between items-center">
               <div className="text-sm text-gray-600">
-                Showing <span className="font-medium">{filteredResults.length}</span> results
+                Showing <span className="font-medium">{filteredResults.length}</span> {selectedCategory}
               </div>
 
               <select className="text-sm border rounded px-2 py-1">
@@ -298,7 +306,7 @@ export default function ResultsPage() {
               {filteredResults.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 transition relative"
+                  className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-200 relative"
                 >
 
                   {/* BEST BADGE */}
@@ -309,16 +317,26 @@ export default function ResultsPage() {
                   )}
 
                   {/* HEADER */}
-                  <div className="flex gap-3 mb-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center">
-                      💻
-                    </div>
+                  <div className="mb-4">
 
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">{item.name}</p>
-                      <p className="text-xs text-gray-500">Brand · Retailer</p>
-                      <p className="text-base font-semibold text-gray-900">₹{item.price}</p>
-                    </div>
+                    <img
+                      src={item.image || "https://via.placeholder.com/300"}
+                      alt={item.name}
+                      className="w-full h-48 object-contain rounded-2xl mb-3 transition-transform duration-200 hover:scale-[1.02]"
+                    />
+
+                    <p className="text-sm font-semibold text-gray-900">
+                      {item.name}
+                    </p>
+
+                    <p className="text-xs text-gray-500 mb-1">
+                      {item.brand || "Unknown"} · SmartMatch AI
+                    </p>
+
+                    <p className="text-base font-semibold text-gray-900">
+                      ₹{item.price}
+                    </p>
+
                   </div>
 
                   {/* SCORE CHIPS */}

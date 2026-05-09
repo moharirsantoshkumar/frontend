@@ -50,6 +50,7 @@ export default function Onboarding() {
 
       // store result
       localStorage.setItem("result", JSON.stringify(data));
+      localStorage.setItem("selectedCategory", selectedCategory);
       const existing = JSON.parse(localStorage.getItem("history")) || [];
 
       const newEntry = {
