@@ -6,38 +6,84 @@ import { useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { signInWithGoogle } from "../../../lib/supabase";
 import { signOut } from "../../../lib/supabase";
+import { saveUserPreferences } from "../../../lib/supabase";
+import { fetchUserPreferences } from "../../../lib/supabase";
 
 
 export default function Onboarding() {
 
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const [step, setStep] = useState(() => {
+
+    if (typeof window !== "undefined") {
+
+      const savedStep = localStorage.getItem("onboardingStep");
+
+      if (savedStep) {
+        return Number(savedStep);
+      }
+
+      return 1;
+    }
+
+    return 1;
+  });
+  
   useEffect(() => {
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setStep(2);
-      } else {
-        setStep(1);
+    async function loadUserPreferences() {
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const savedStep =
+        Number(localStorage.getItem("onboardingStep")) || 1;
+
+      if (user && !isLoggedOut) {
+
+        if (savedStep === 1) {
+          setStep(2);
+        }
+
+        const preferences = await fetchUserPreferences(user.id);
+
+        if (preferences) {
+
+          setSelectedCategory(preferences.selected_category);
+
+          setWeights({
+            "Price sensitivity":
+              preferences.price_sensitivity || 0.5,
+
+            "Delivery speed":
+              preferences.delivery_speed || 0.2,
+
+            "Sustainability":
+              preferences.sustainability || 0.2,
+
+            "Review depth":
+              preferences.review_depth || 0.1,
+
+            "Brand trust":
+              preferences.brand_trust || 0.3,
+          });
+        }
       }
-    });
+    }
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    loadUserPreferences();
 
-      if (session) {
-        setStep(2);
-      } else {
-        setStep(1);
-      }
+  }, [isLoggedOut]);
 
-    });
-
-    return () => subscription.unsubscribe();
-
-  }, []);
+  useEffect(() => {
+    localStorage.setItem("onboardingStep", step);
+  }, [step]);
+  
+  
 
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  
   const categories = [
     { icon: "💻", value: "laptops", label: "Laptops" },
     { icon: "📱", value: "mobiles", label: "Mobiles" },
@@ -68,6 +114,17 @@ export default function Onboarding() {
     setLoading(true);
 
     try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await saveUserPreferences({
+          userId: user.id,
+          selectedCategory,
+          weights,
+        });
+      }
      const res = await fetch("https://backend-mm9y.onrender.com/recommendations", {
       method: "POST",
       headers: {
@@ -111,7 +168,7 @@ export default function Onboarding() {
     <div className="flex items-center justify-between px-4 md:px-8 h-14 bg-white">
 
         {/* LOGO */}
-        <div className="text-lg font-semibold">
+        <div className="text-lg font-semibold shrink-0">
             Clari<span className="text-green-600">Cart</span>
         </div>
         <div className="md:hidden text-sm text-gray-500">
@@ -119,7 +176,7 @@ export default function Onboarding() {
         </div>
 
         {/* STEPS */}
-        <div className="hidden md:flex items-center gap-3 text-sm">
+        <div className="hidden md:flex items-center justify-center gap-3 text-sm flex-1">
 
             {/* Step 1 */}
             <div
@@ -201,13 +258,26 @@ export default function Onboarding() {
             </div>
 
         </div>
+          <div className="flex items-center gap-2 shrink-0">
+
             <button
-              onClick={signOut}
-              className="bg-green-600 text-white py-3 rounded-lg font-medium"
+              onClick={async () => {
+
+                setIsLoggedOut(true);
+
+                localStorage.setItem("onboardingStep", 1);
+
+                setStep(1);
+
+                await signOut();
+              }}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium"
             >
               Logout
             </button>
-        <div></div>
+
+          </div>
+        
 
         </div>
 

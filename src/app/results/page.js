@@ -243,7 +243,10 @@ export default function ResultsPage() {
             ))}
 
             <p
-                onClick={() => router.push("/onboarding")}
+                onClick={() => {
+                  localStorage.setItem("onboardingStep", 2);
+                  router.push("/onboarding");
+                }}
                 className="text-xs text-green-600 mt-2 cursor-pointer hover:underline"
               >
                 Edit preferences →
