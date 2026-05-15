@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
 
+import { supabase } from "../../lib/supabase";
+
+console.log("Supabase Conneccted and detais are :", supabase);
+
 const getImage = (name) => {
   const images = {
     "Asus Vivobook 15":

@@ -2,8 +2,40 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { supabase } from "../../../lib/supabase";
+import { signInWithGoogle } from "../../../lib/supabase";
+import { signOut } from "../../../lib/supabase";
+
 
 export default function Onboarding() {
+
+  useEffect(() => {
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setStep(2);
+      } else {
+        setStep(1);
+      }
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+
+      if (session) {
+        setStep(2);
+      } else {
+        setStep(1);
+      }
+
+    });
+
+    return () => subscription.unsubscribe();
+
+  }, []);
+
   const router = useRouter();
   const [step, setStep] = useState(1);
   const categories = [
@@ -169,7 +201,12 @@ export default function Onboarding() {
             </div>
 
         </div>
-
+            <button
+              onClick={signOut}
+              className="bg-green-600 text-white py-3 rounded-lg font-medium"
+            >
+              Logout
+            </button>
         <div></div>
 
         </div>
@@ -206,10 +243,21 @@ export default function Onboarding() {
         </p>
 
         <button
+          onClick={signInWithGoogle}
+          className="w-full bg-green-600 text-white py-3 rounded-lg font-medium"
+        >
+          Continue with Google
+        </button>
+          <div className="flex items-center my-4">
+            <div className="flex-1 h-px bg-gray-200"></div>
+            <span className="px-3 text-xs text-gray-400">or</span>
+            <div className="flex-1 h-px bg-gray-200"></div>
+          </div>
+        <button
           onClick={() => setStep(2)}
           className="w-full bg-green-600 text-white py-3 rounded-lg"
         >
-          Get Started →
+          Continue as Guest →
         </button>
       </>
     )}
