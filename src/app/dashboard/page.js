@@ -2,17 +2,94 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { supabase } from "../../../lib/supabase";
+import { fetchRecommendationSessions } from "../../../lib/supabase";
+import { fetchUserPreferences } from "../../../lib/supabase";
 
 export default function Dashboard() {
   const router = useRouter();
   const [result, setResult] = useState([]);
+  const [weights, setWeights] = useState(null);
   useEffect(() => {
-    const data = localStorage.getItem("history");
 
-    if (data) {
-        setResult(JSON.parse(data));
+    async function loadHistory() {
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      // Logged-in user → DB history
+      if (user) {
+
+        const sessions =
+          await fetchRecommendationSessions(user.id);
+
+        const formattedHistory = sessions.map((session) => ({
+          ...session.recommendation_payload,
+          timestamp: session.created_at,
+        }));
+
+        setResult(formattedHistory);
+      }
+
+      // Guest user → localStorage fallback
+      else {
+
+        const data = localStorage.getItem("history");
+
+        if (data) {
+          setResult(JSON.parse(data));
+        }
+      }
+
+      const preferences =
+        await fetchUserPreferences(user.id);
+
+      if (preferences) {
+
+        setWeights([
+          {
+            name: "Price",
+            value:
+              Math.round(
+                preferences.price_sensitivity * 100
+              ),
+          },
+          {
+            name: "Reviews",
+            value:
+              Math.round(
+                preferences.review_depth * 100
+              ),
+          },
+          {
+            name: "Brand",
+            value:
+              Math.round(
+                preferences.brand_trust * 100
+              ),
+          },
+          {
+            name: "Speed",
+            value:
+              Math.round(
+                preferences.delivery_speed * 100
+              ),
+          },
+          {
+            name: "Eco",
+            value:
+              Math.round(
+                preferences.sustainability * 100
+              ),
+          },
+        ]);
+      }
     }
-    }, []);
+
+    loadHistory();
+
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
@@ -72,17 +149,30 @@ export default function Dashboard() {
               Your weights
             </p>
 
-            {["Price", "Reviews", "Brand", "Speed", "Eco"].map((item, i) => (
+            {(weights || []).map((w, i) => (
               <div key={i} className="flex items-center gap-2 mb-2">
-                <span className="w-16 text-xs text-gray-900">{item}</span>
+
+                <span className="w-16 text-xs text-gray-900">
+                  {w.name}
+                </span>
+
                 <div className="flex-1 h-1 bg-gray-200 rounded">
-                  <div className="h-1 bg-green-600 rounded w-2/3" />
+
+                  <div
+                    className="h-1 bg-green-600 rounded"
+                    style={{ width: `${w.value}%` }}
+                  />
+
                 </div>
+
               </div>
             ))}
 
             <p
-              onClick={() => router.push("/onboarding")}
+              onClick={() => {
+                localStorage.setItem("onboardingStep", 2);
+                router.push("/onboarding");
+              }}
               className="text-xs text-green-600 mt-2 cursor-pointer"
             >
               Edit →

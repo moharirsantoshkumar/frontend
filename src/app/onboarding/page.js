@@ -8,6 +8,7 @@ import { signInWithGoogle } from "../../../lib/supabase";
 import { signOut } from "../../../lib/supabase";
 import { saveUserPreferences } from "../../../lib/supabase";
 import { fetchUserPreferences } from "../../../lib/supabase";
+import { saveRecommendationSession } from "../../../lib/supabase";
 
 
 export default function Onboarding() {
@@ -136,6 +137,15 @@ export default function Onboarding() {
           })
       });
       const data = await res.json();
+
+      if (user) {
+        await saveRecommendationSession({
+          userId: user.id,
+          category: selectedCategory,
+          recommendationData: data,
+        });
+
+      }
 
       // store result
       localStorage.setItem("result", JSON.stringify(data));

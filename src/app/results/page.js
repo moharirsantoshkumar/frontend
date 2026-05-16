@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../../../lib/supabase";
+import { fetchUserPreferences } from "../../../lib/supabase";
 
 export default function ResultsPage() {
 
@@ -9,6 +11,7 @@ export default function ResultsPage() {
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [weights, setWeights] = useState(null);
   const categoryIcons = {
     laptops: "💻",
     mobiles: "📱",
@@ -41,6 +44,63 @@ export default function ResultsPage() {
 
         setResult(combined);
       }
+
+      async function loadPreferences() {
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+
+          const preferences =
+            await fetchUserPreferences(user.id);
+
+          if (preferences) {
+
+            setWeights([
+              {
+                name: "Price",
+                value:
+                  Math.round(
+                    preferences.price_sensitivity * 100
+                  ),
+              },
+              {
+                name: "Reviews",
+                value:
+                  Math.round(
+                    preferences.review_depth * 100
+                  ),
+              },
+              {
+                name: "Brand",
+                value:
+                  Math.round(
+                    preferences.brand_trust * 100
+                  ),
+              },
+              {
+                name: "Speed",
+                value:
+                  Math.round(
+                    preferences.delivery_speed * 100
+                  ),
+              },
+              {
+                name: "Eco",
+                value:
+                  Math.round(
+                    preferences.sustainability * 100
+                  ),
+              },
+            ]);
+          }
+        }
+      }
+
+      loadPreferences();
+
     }, []);
 
   useEffect(() => {
@@ -223,15 +283,11 @@ export default function ResultsPage() {
           <div>
             <p className="text-xs uppercase Black mb-2">Your active weights</p>
 
-            {[
-              { name: "Price", value: 78 },
-              { name: "Reviews", value: 70 },
-              { name: "Brand", value: 55 },
-              { name: "Speed", value: 50 },
-              { name: "Eco", value: 22 }
-            ].map((w, i) => (
+            {(weights || []).map((w, i) => (
               <div key={i} className="flex items-center gap-2 mb-1">
-                <span className="w-16 text-xs text-gray-500">{w.name}</span>
+                <span className="w-16 text-xs text-gray-500">
+                  {w.name}
+                </span>
 
                 <div className="flex-1 h-[3px] bg-gray-200 rounded">
                   <div
