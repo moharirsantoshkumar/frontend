@@ -14,33 +14,23 @@ import { saveRecommendationSession } from "../../../lib/supabase";
 export default function Onboarding() {
 
   const [isLoggedOut, setIsLoggedOut] = useState(false);
-  const [step, setStep] = useState(() => {
-
-    if (typeof window !== "undefined") {
-
-      const savedStep = localStorage.getItem("onboardingStep");
-
-      if (savedStep) {
-        return Number(savedStep);
-      }
-
-      return 1;
-    }
-
-    return 1;
-  });
+  const [mounted, setMounted] = useState(false);
+  const [step, setStep] = useState(1);
+  
   
   useEffect(() => {
 
     async function loadUserPreferences() {
+      setMounted(true);
+      const savedStep =
+        Number(localStorage.getItem("onboardingStep")) || 1;
 
+      setStep(savedStep);
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
-      const savedStep =
-        Number(localStorage.getItem("onboardingStep")) || 1;
-
+      
       if (user && !isLoggedOut) {
 
         if (savedStep === 1) {
@@ -171,6 +161,10 @@ export default function Onboarding() {
     setLoading(false);
   };
 
+  if (!mounted) {
+    return null;
+  }
+  
   return (
    <div className="min-h-screen">
 

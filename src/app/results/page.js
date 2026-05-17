@@ -448,7 +448,18 @@ export default function ResultsPage() {
                   
                   {/* BUTTONS */}
                   <div className="flex gap-2">
-                    <button className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-md transition">
+                    <button
+                      onClick={() => {
+
+                        localStorage.setItem(
+                          "selectedProduct",
+                          JSON.stringify(item)
+                        );
+                        alert("clicked");
+                        router.push("/product");
+                      }}
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-md transition"
+                    >
                       View →
                     </button>
                     <button className="border text-sm px-3 rounded">
