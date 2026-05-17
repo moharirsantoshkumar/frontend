@@ -455,7 +455,6 @@ export default function ResultsPage() {
                           "selectedProduct",
                           JSON.stringify(item)
                         );
-                        alert("clicked");
                         router.push("/product");
                       }}
                       className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-md transition"
