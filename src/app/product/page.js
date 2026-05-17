@@ -87,7 +87,7 @@ export default function ProductPage() {
             </span>
 
             <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
-              Rating {product.rating}
+              Rating {product.rating || "--"}
             </span>
 
           </div>
@@ -102,7 +102,7 @@ export default function ProductPage() {
             <p className="text-gray-600 text-sm leading-relaxed">
 
               {product.decision_summary ||
-                product.explanation}
+                product.explanation || "--"}
 
             </p>
 
