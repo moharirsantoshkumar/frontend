@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
 import { fetchRecommendationSessions } from "../../../lib/supabase";
 import { fetchUserPreferences } from "../../../lib/supabase";
+import { fetchSavedProducts } from "../../../lib/supabase";
 
 export default function Dashboard() {
   const router = useRouter();
   const [result, setResult] = useState([]);
   const [weights, setWeights] = useState(null);
+  const [savedProducts, setSavedProducts] = useState([]);
   useEffect(() => {
 
     async function loadHistory() {
@@ -23,6 +25,10 @@ export default function Dashboard() {
 
         const sessions =
           await fetchRecommendationSessions(user.id);
+
+        const saved =
+          await fetchSavedProducts(user.id);
+        setSavedProducts(saved);
 
         const formattedHistory = sessions.map((session) => ({
           ...session.recommendation_payload,
@@ -248,11 +254,10 @@ export default function Dashboard() {
           <p className="text-sm font-medium mb-3 mt-6">
             Recent Activity
             </p>
-
-            <div className="space-y-3">
+          <div className="space-y-3">
 
             {result?.length > 0 ? (
-                result.slice(0, 5)?.map((item, i) => (
+                result.slice(0, 3)?.map((item, i) => (
                 <div
                     key={i}
                     className="bg-white p-3 rounded border flex justify-between items-center"
@@ -277,7 +282,91 @@ export default function Dashboard() {
                 </p>
             )}
 
-            </div>
+          </div>
+          {result.length > 3 && (
+            <p className="text-sm text-green-600 mt-3 cursor-pointer">
+              View More →
+            </p>
+          )}
+
+          <p className="text-sm font-medium mb-3 mt-8">
+            Saved Products
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+
+            {savedProducts?.length > 0 ? (
+
+              savedProducts.slice(0, 3).map((item, i) => {
+
+                const product = item.product_payload;
+
+                return (
+
+                  <div
+                    key={i}
+                    className="bg-white rounded-xl border p-4"
+                  >
+
+                    <img
+                      src={
+                        product.image ||
+                        "https://via.placeholder.com/300"
+                      }
+                      alt={product.name}
+                      className="w-full h-40 object-contain mb-3"
+                    />
+
+                    <p className="font-medium text-sm">
+                      {product.name}
+                    </p>
+
+                    <p className="text-xs text-gray-500 mb-2">
+                      {product.brand || "Unknown"}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+
+                      <p className="font-semibold">
+                        ₹{product.price}
+                      </p>
+
+                      <button
+                        onClick={() => {
+
+                          localStorage.setItem(
+                            "selectedProduct",
+                            JSON.stringify(product)
+                          );
+
+                          router.push("/product");
+                        }}
+                        className="text-sm text-green-600"
+                      >
+                        View →
+                      </button>
+
+                    </div>
+
+                  </div>
+                );
+              })
+
+            ) : (
+
+              <p className="text-sm text-gray-500">
+                No saved products yet
+              </p>
+
+            )}
+
+          </div>
+
+          {savedProducts.length > 3 && (
+            <p className="text-sm text-green-600 mt-3 cursor-pointer">
+              View More →
+            </p>
+          )}
 
         </div>
 

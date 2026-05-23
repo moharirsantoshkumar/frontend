@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
 import { fetchUserPreferences } from "../../../lib/supabase";
+import { saveProduct } from "../../../lib/supabase";
 
 export default function ResultsPage() {
 
@@ -12,6 +13,7 @@ export default function ResultsPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [weights, setWeights] = useState(null);
+  const [compareProducts, setCompareProducts] = useState([]);
   const categoryIcons = {
     laptops: "💻",
     mobiles: "📱",
@@ -114,8 +116,19 @@ export default function ResultsPage() {
           priceRange: [min, max]
         });
       }
-    }, [result]);
-  
+      }, [result]);
+    
+      useEffect(() => {
+
+    const stored =
+      JSON.parse(
+        localStorage.getItem("compareProducts")
+      ) || [];
+
+    setCompareProducts(stored);
+
+  }, []);
+
   const filteredResults = Array.isArray(result)
     ? result.filter((item) => {
         const range = filters.priceRange || [0, Infinity];
@@ -448,6 +461,8 @@ export default function ResultsPage() {
                   
                   {/* BUTTONS */}
                   <div className="flex gap-2">
+
+                    {/* VIEW */}
                     <button
                       onClick={() => {
 
@@ -455,15 +470,119 @@ export default function ResultsPage() {
                           "selectedProduct",
                           JSON.stringify(item)
                         );
+
                         router.push("/product");
                       }}
                       className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-md transition"
                     >
                       View →
                     </button>
-                    <button className="border text-sm px-3 rounded">
+
+                    {/* COMPARE */}
+                    <button
+                      onClick={() => {
+
+                      const existing =
+                        JSON.parse(
+                          localStorage.getItem("compareProducts")
+                        ) || [];
+
+                      const alreadyExists = existing.find(
+                        (p) => p.name === item.name
+                      );
+
+                      // REMOVE PRODUCT
+                      if (alreadyExists) {
+
+                        const updated = existing.filter(
+                          (p) => p.name !== item.name
+                        );
+
+                        localStorage.setItem(
+                          "compareProducts",
+                          JSON.stringify(updated)
+                        );
+
+                        setCompareProducts(updated);
+
+                        return;
+                      }
+
+                      // LIMIT TO 2
+                      if (existing.length >= 2) {
+
+                        alert(
+                          "You can compare only 2 products currently"
+                        );
+
+                        return;
+                      }
+
+                      // ADD PRODUCT
+                      const updated = [...existing, item];
+
+                      localStorage.setItem(
+                        "compareProducts",
+                        JSON.stringify(updated)
+                      );
+
+                      setCompareProducts(updated);
+                    }}
+                      className="border text-sm px-3 rounded"
+                    >
+                      {
+                        compareProducts.find(
+                          (p) => p.name === item.name
+                        )
+                          ? "✓ Selected"
+                          : "Compare"
+                      }
+                    </button>
+
+                    {/* SAVE */}
+                    <button
+                      onClick={async () => {
+
+                        try {
+
+                          const {
+                            data: { user },
+                          } = await supabase.auth.getUser();
+
+                          if (!user) {
+
+                            alert(
+                              "Please login to save products"
+                            );
+
+                            return;
+                          }
+
+                          await saveProduct({
+                            userId: user.id,
+                            product: item,
+                          });
+
+                          alert("Product saved!");
+
+                        } catch (err) {
+
+                          console.error(err);
+
+                          alert("Error saving product");
+                        }
+                      }}
+                      className={`text-sm px-3 rounded border transition ${
+                        compareProducts.find(
+                          (p) => p.name === item.name
+                        )
+                          ? "bg-green-600 text-white border-green-600"
+                          : "bg-white"
+                      }`}
+                    >
                       Save
                     </button>
+
                   </div>
 
                 </div>
@@ -476,6 +595,26 @@ export default function ResultsPage() {
 
       </div>
 
+      {compareProducts.length >= 2 && (
+
+          <div className="fixed bottom-6 right-6 bg-white shadow-xl border rounded-2xl px-5 py-4 flex items-center gap-4 z-50">
+
+            <p className="text-sm font-medium">
+              {compareProducts.length} products selected
+            </p>
+
+            <button
+              onClick={() => router.push("/compare")}
+              className="bg-green-600 text-white px-4 py-2 rounded-xl"
+            >
+              Compare Now
+            </button>
+
+          </div>
+        )}
+
     </div>
+
+    
   );
 }
