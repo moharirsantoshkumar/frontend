@@ -438,20 +438,64 @@ export default function ResultsPage() {
                             </span>
 
                           </div>
+                          <div className="mt-2 text-[11px] text-gray-600 italic">
+                            ✔ Lowest price with
+                            {" "}
+                            <span className="font-semibold">
+                              {item.pricing.best_store}
+                            </span>
+                            {" "}
+                            and fastest available delivery.
+                          </div>
 
-                          <div className="flex justify-between text-xs mt-1">
+                          <div className="flex justify-between items-center mt-2">
 
-                            <span className="text-gray-500">
+                            <span className="text-xs text-gray-500">
                               Savings
                             </span>
 
-                            <span className="font-medium">
+                            <span className="rounded-full bg-green-600 px-2 py-1 text-xs font-semibold text-white">
                               {item.pricing.currency === "USD" ? "$" : "₹"}
                               {item.pricing.potential_savings}
                             </span>
 
                           </div>
 
+                          <div className="flex justify-between text-xs mt-1">
+
+                            <span className="text-gray-500">
+                              Retailers Compared
+                            </span>
+
+                            <span className="font-medium">
+                              {item.retailers?.length || 0}
+                            </span>
+
+                          </div>
+                          <div className="flex justify-between text-xs mt-1">
+
+                            <span className="text-gray-500">
+                              Fastest Delivery
+                            </span>
+
+                            <span className="font-medium text-blue-600">
+                              {item.retailers?.find(r => r.in_stock)?.delivery_days
+                                ? `${item.retailers.find(r => r.in_stock).delivery_days} day(s)`
+                                : "N/A"}
+                            </span>
+
+                          </div>
+                          <div className="flex justify-between text-xs mt-1">
+
+                            <span className="text-gray-500">
+                              Seller
+                            </span>
+
+                            <span className="font-medium">
+                              {item.retailers?.find(r => r.in_stock)?.seller || "N/A"}
+                            </span>
+
+                          </div>
                           <div className="mt-2 inline-block rounded-full bg-green-100 px-2 py-1 text-[10px] font-medium text-green-700">
 
                             {item.pricing.price_status}
@@ -462,6 +506,22 @@ export default function ResultsPage() {
                       )}
 
                     </div>
+
+                    <div className="flex justify-between items-center">
+
+                      <div>
+
+                          <div className="text-[10px] uppercase text-blue-600 font-semibold">
+                              AI Recommendation
+                          </div>
+
+                          <div className="text-xs mt-1">
+                              {item.pricing?.buy_recommendation}
+                          </div>
+
+                      </div>
+
+                  </div>
 
                   </div>
 
@@ -475,14 +535,37 @@ export default function ResultsPage() {
                     </span>
                   </div>
 
-                  {/* MODEL AGREEMENT */}
-                  <div className="flex items-center gap-1 text-xs text-gray-500 mb-2">
-                    <span>Models:</span>
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    <span>3/3 recommend</span>
+                  {/* PRICE CONFIDENCE */}
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+
+                  <span>
+                    Price Confidence
+                  </span>
+                  <div className="flex items-center gap-1">
+
+                    <span>
+                      {item.pricing?.confidence === "High"
+                        ? "🟢"
+                        : item.pricing?.confidence === "Medium"
+                        ? "🟡"
+                        : "🔴"}
+                    </span>
+
+                    <span
+                      className={`font-medium ${
+                        item.pricing?.confidence === "High"
+                          ? "text-green-600"
+                          : item.pricing?.confidence === "Medium"
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {item.pricing?.confidence || "N/A"}
+                    </span>
+
                   </div>
+
+                </div>
 
                   {/* WHY TEXT */}
                   <div className="text-xs bg-gray-50 rounded p-2 mb-3 leading-relaxed">

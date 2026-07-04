@@ -9,6 +9,7 @@ import { signOut } from "../../../lib/supabase";
 import { saveUserPreferences } from "../../../lib/supabase";
 import { fetchUserPreferences } from "../../../lib/supabase";
 import { saveRecommendationSession } from "../../../lib/supabase";
+import { getRecommendations } from "../../lib/api";
 
 
 export default function Onboarding() {
@@ -116,20 +117,12 @@ export default function Onboarding() {
           weights,
         });
       }
-     const res = await fetch("https://backend-mm9y.onrender.com/recommendations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-            weights,
-            category: selectedCategory
-          })
+     const data = await getRecommendations({
+        weights,
+        category: selectedCategory,
       });
 
-      console.log("Status:", res.status);
-
-      const data = await res.json();
+      
 
       if (user) {
         await saveRecommendationSession({
