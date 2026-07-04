@@ -490,6 +490,25 @@ export default function ResultsPage() {
                             </span>
 
                           </div>
+                          <div className="flex justify-between text-xs mt-1">
+                              <span className="text-gray-500">
+                                  Trend
+                              </span>
+
+                              <span
+                                  className={`font-medium ${
+                                      item.pricing?.price_trend === "Falling"
+                                          ? "text-green-600"
+                                          : item.pricing?.price_trend === "Rising"
+                                          ? "text-red-600"
+                                          : "text-gray-700"
+                                  }`}
+                              >
+                                  {item.pricing?.price_trend}
+                              </span>
+
+                          </div>
+                          
                           <div className="mt-2 inline-block rounded-full bg-green-100 px-2 py-1 text-[10px] font-medium text-green-700">
 
                             {item.pricing.price_status}
@@ -510,7 +529,17 @@ export default function ResultsPage() {
                           </div>
 
                           <div className="text-xs mt-1">
-                              {item.pricing?.buy_recommendation}
+                            <span
+                              className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${
+                                  item.pricing?.recommended_action === "Buy Now"
+                                      ? "bg-green-100 text-green-700"
+                                      : item.pricing?.recommended_action === "Wait"
+                                      ? "bg-yellow-100 text-yellow-700"
+                                      : "bg-blue-100 text-blue-700"
+                              }`}
+                          >
+                              {item.pricing?.recommended_action}
+                          </span>
                           </div>
 
                       </div>
