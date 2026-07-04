@@ -30,12 +30,15 @@ export default function Dashboard() {
           await fetchSavedProducts(user.id);
         setSavedProducts(saved);
 
-        const formattedHistory = sessions.map((session) => ({
-          ...session.recommendation_payload,
-          timestamp: session.created_at,
-        }));
+        const formattedHistory = sessions
+          .map((session) => ({
+            ...session.recommendation_payload,
+            timestamp: session.created_at,
+          }))
+          .filter(item => item.top_recommendation);
 
         setResult(formattedHistory);
+        
       }
 
       // Guest user → localStorage fallback

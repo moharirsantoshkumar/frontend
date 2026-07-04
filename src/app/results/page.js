@@ -23,7 +23,11 @@ export default function ResultsPage() {
     priceRange: [0, 100000]   // safe default
   });
 
-  const prices = Array.isArray(result) ? result.map(r => r.price) : [];
+  const prices = Array.isArray(result)
+  ? result
+      .filter(item => item)
+      .map(item => item.price)
+  : [];
 
   const minAvailablePrice = prices.length ? Math.min(...prices) : 0;
   const maxAvailablePrice = prices.length ? Math.max(...prices) : 100000;
@@ -39,11 +43,14 @@ export default function ResultsPage() {
       if (data) {
         const parsed = JSON.parse(data);
 
+        console.log(parsed);
+
         const combined = [
           parsed.top_recommendation,
           ...(parsed.alternatives || [])
         ];
 
+        
         setResult(combined);
       }
 
@@ -107,18 +114,23 @@ export default function ResultsPage() {
 
   useEffect(() => {
       if (Array.isArray(result) && result.length > 0) {
-        const prices = result.map(r => r.price);
 
-        const min = Math.min(...prices);
-        const max = Math.max(...prices);
+        const validProducts = result.filter(Boolean);
+
+        const prices = validProducts.map(r => r.price);
+
+        if (!prices.length) return;
 
         setFilters({
-          priceRange: [min, max]
+          priceRange: [
+            Math.min(...prices),
+            Math.max(...prices)
+          ]
         });
       }
-      }, [result]);
+    }, [result]);
     
-      useEffect(() => {
+  useEffect(() => {
 
     const stored =
       JSON.parse(
@@ -405,9 +417,51 @@ export default function ResultsPage() {
                       {item.brand || "Unknown"} · SmartMatch AI
                     </p>
 
-                    <p className="text-base font-semibold text-gray-900">
-                      ₹{item.price}
-                    </p>
+                    <div className="mb-3">
+
+                      <p className="text-base font-semibold text-gray-900">
+                        {item.pricing?.currency === "USD" ? "$" : "₹"}
+                        {item.pricing?.best_price ?? item.price}
+                      </p>
+
+                      {item.pricing && (
+                        <div className="mt-2 rounded-lg bg-green-50 border border-green-100 p-2">
+
+                          <div className="flex justify-between text-xs">
+
+                            <span className="text-gray-500">
+                              Best Store
+                            </span>
+
+                            <span className="font-medium text-green-700">
+                              {item.pricing.best_store}
+                            </span>
+
+                          </div>
+
+                          <div className="flex justify-between text-xs mt-1">
+
+                            <span className="text-gray-500">
+                              Savings
+                            </span>
+
+                            <span className="font-medium">
+                              {item.pricing.currency === "USD" ? "$" : "₹"}
+                              {item.pricing.potential_savings}
+                            </span>
+
+                          </div>
+
+                          <div className="mt-2 inline-block rounded-full bg-green-100 px-2 py-1 text-[10px] font-medium text-green-700">
+
+                            {item.pricing.price_status}
+
+                          </div>
+
+                        </div>
+                      )}
+
+                    </div>
 
                   </div>
 

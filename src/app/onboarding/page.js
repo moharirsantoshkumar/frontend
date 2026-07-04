@@ -126,6 +126,9 @@ export default function Onboarding() {
             category: selectedCategory
           })
       });
+
+      console.log("Status:", res.status);
+
       const data = await res.json();
 
       if (user) {
