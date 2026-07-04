@@ -439,13 +439,7 @@ export default function ResultsPage() {
 
                           </div>
                           <div className="mt-2 text-[11px] text-gray-600 italic">
-                            ✔ Lowest price with
-                            {" "}
-                            <span className="font-semibold">
-                              {item.pricing.best_store}
-                            </span>
-                            {" "}
-                            and fastest available delivery.
+                            ✔ {item.pricing?.retailer_reason}
                           </div>
 
                           <div className="flex justify-between items-center mt-2">
