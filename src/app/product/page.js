@@ -41,10 +41,10 @@ export default function ProductPage() {
         ← Back
       </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
         {/* IMAGE */}
-        <div className="bg-white rounded-2xl p-6">
+        <div className="lg:col-span-2 bg-white rounded-2xl p-6">
 
           <img
             src={
@@ -58,7 +58,7 @@ export default function ProductPage() {
         </div>
 
         {/* DETAILS */}
-        <div className="space-y-4">
+        <div className="lg:col-span-3 space-y-4">
 
           <div>
 
@@ -72,8 +72,40 @@ export default function ProductPage() {
 
           </div>
 
-          <div className="text-2xl font-bold">
-            ₹{product.price}
+          {/* DECISION BANNER */}
+          <div className="rounded-xl border border-green-200 bg-green-50 p-3">
+
+            <div className="text-xs uppercase tracking-wide text-green-700 font-semibold">
+              ClariCart Decision
+            </div>
+
+            <div className="mt-1 font-medium text-gray-800">
+              ✅ {product.pricing?.buy_recommendation}
+            </div>
+
+            <div className="mt-1 text-sm text-gray-600">
+              {product.pricing?.retailer_reason}
+            </div>
+
+          </div>
+
+          <div>
+
+            <div className="text-2xl font-bold">
+              {product.pricing?.currency === "USD" ? "$" : "₹"}
+              {product.pricing?.best_price ?? product.price}
+            </div>
+
+            <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
+
+              <span>🏪</span>
+
+              <span>
+                Best Price at {product.pricing?.best_store}
+              </span>
+
+            </div>
+
           </div>
 
           <div className="flex gap-2">
@@ -92,6 +124,60 @@ export default function ProductPage() {
 
           </div>
 
+          {/* RETAIL INTELLIGENCE */}
+          <div className="bg-white rounded-xl p-4">
+
+            <h2 className="font-semibold mb-3">
+              Retail Intelligence
+            </h2>
+
+            <div className="grid grid-cols-3 gap-3 mb-4">
+
+              <div className="rounded-lg bg-green-50 p-3 text-center">
+
+                <div className="text-xs text-gray-500">
+                  Best Store
+                </div>
+
+                <div className="font-semibold text-green-700">
+                  {product.pricing?.best_store}
+                </div>
+
+              </div>
+
+              <div className="rounded-lg bg-green-50 p-3 text-center">
+
+                <div className="text-xs text-gray-500">
+                  Savings
+                </div>
+
+                <div className="font-semibold text-green-700">
+                  {product.pricing?.currency === "USD" ? "$" : "₹"}
+                  {product.pricing?.potential_savings}
+                </div>
+
+              </div>
+
+              <div className="rounded-lg bg-yellow-50 p-3 text-center">
+
+                <div className="text-xs text-gray-500">
+                  Status
+                </div>
+
+                <div className="font-semibold">
+                  {product.pricing?.price_status}
+                </div>
+
+              </div>
+
+            </div>
+
+            <div className="text-sm text-gray-600 italic">
+              ✔ {product.pricing?.retailer_reason}
+            </div>
+
+          </div>
+
           {/* WHY SECTION */}
           <div className="bg-white rounded-xl p-4">
 
@@ -105,6 +191,57 @@ export default function ProductPage() {
                 product.explanation || "--"}
 
             </p>
+
+          </div>
+
+          {/* RETAILER COMPARISON */}
+          <div className="bg-white rounded-xl p-4">
+
+            <h2 className="font-semibold mb-3">
+              Compare Retailers
+            </h2>
+
+            <div className="space-y-2">
+
+              {product.retailers?.map((retailer, index) => (
+
+                <div
+                  key={index}
+                  className="flex items-center justify-between border rounded-lg p-3"
+                >
+
+                  <div>
+
+                    <div className="font-medium">
+                      {retailer.retailer}
+                    </div>
+
+                    <div className="text-xs text-gray-500">
+                      Seller: {retailer.seller}
+                    </div>
+
+                  </div>
+
+                  <div className="text-right">
+
+                    <div className="font-semibold">
+                      {retailer.currency === "USD" ? "$" : "₹"}
+                      {retailer.price}
+                    </div>
+
+                    <div className="text-xs text-gray-500">
+                      {retailer.in_stock
+                        ? `${retailer.delivery_days} day(s)`
+                        : "Out of Stock"}
+                    </div>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
 
           </div>
 
