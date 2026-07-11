@@ -529,18 +529,19 @@ export default function ResultsPage() {
                           </div>
 
                           <div className="text-xs mt-1">
-                            <span
-                              className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${
-                                  item.pricing?.recommended_action === "Buy Now"
-                                      ? "bg-green-100 text-green-700"
-                                      : item.pricing?.recommended_action === "Wait"
-                                      ? "bg-yellow-100 text-yellow-700"
-                                      : "bg-blue-100 text-blue-700"
-                              }`}
-                          >
-                              {item.pricing?.recommended_action}
-                          </span>
+                              <span
+                                className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${
+                                    item.pricing?.recommended_action === "Buy Now"
+                                        ? "bg-green-100 text-green-700"
+                                        : item.pricing?.recommended_action === "Wait"
+                                        ? "bg-yellow-100 text-yellow-700"
+                                        : "bg-blue-100 text-blue-700"
+                                }`}
+                            >
+                                {item.pricing?.recommended_action}
+                            </span>
                           </div>
+
 
                       </div>
 
