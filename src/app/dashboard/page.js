@@ -51,48 +51,36 @@ export default function Dashboard() {
         }
       }
 
-      const preferences =
-        await fetchUserPreferences(user.id);
+      if (user) {
 
-      if (preferences) {
+        const preferences =
+          await fetchUserPreferences(user.id);
 
-        setWeights([
-          {
-            name: "Price",
-            value:
-              Math.round(
-                preferences.price_sensitivity * 100
-              ),
-          },
-          {
-            name: "Reviews",
-            value:
-              Math.round(
-                preferences.review_depth * 100
-              ),
-          },
-          {
-            name: "Brand",
-            value:
-              Math.round(
-                preferences.brand_trust * 100
-              ),
-          },
-          {
-            name: "Speed",
-            value:
-              Math.round(
-                preferences.delivery_speed * 100
-              ),
-          },
-          {
-            name: "Eco",
-            value:
-              Math.round(
-                preferences.sustainability * 100
-              ),
-          },
-        ]);
+        if (preferences) {
+
+          setWeights([
+            {
+              name: "Price",
+              value: Math.round(preferences.price_sensitivity * 100),
+            },
+            {
+              name: "Reviews",
+              value: Math.round(preferences.review_depth * 100),
+            },
+            {
+              name: "Brand",
+              value: Math.round(preferences.brand_trust * 100),
+            },
+            {
+              name: "Speed",
+              value: Math.round(preferences.delivery_speed * 100),
+            },
+            {
+              name: "Eco",
+              value: Math.round(preferences.sustainability * 100),
+            },
+          ]);
+        }
       }
     }
 
@@ -236,6 +224,67 @@ export default function Dashboard() {
             </div>
 
           </div>
+
+          {/* PRICE INTELLIGENCE */}
+
+            {result?.[0]?.top_recommendation?.pricing && (
+
+            <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+
+                <h2 className="font-semibold mb-4">
+                    Price Intelligence
+                </h2>
+
+                <div className="grid grid-cols-3 gap-4">
+
+                    <div>
+
+                        <p className="text-xs text-gray-500">
+                            Recommendation
+                        </p>
+
+                        <p className="font-semibold text-green-700">
+                            {
+                                result[0].top_recommendation.pricing.recommended_action
+                            }
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p className="text-xs text-gray-500">
+                            Price Trend
+                        </p>
+
+                        <p className="font-semibold">
+                            {
+                                result[0].top_recommendation.pricing.price_trend
+                            }
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p className="text-xs text-gray-500">
+                            Potential Savings
+                        </p>
+
+                        <p className="font-semibold text-green-700">
+                            $
+                            {
+                                result[0].top_recommendation.pricing.estimated_wait_savings
+                            }
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            )}
 
             
           {/* Categories */}

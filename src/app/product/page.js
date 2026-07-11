@@ -85,10 +85,47 @@ export default function ProductPage() {
 
             <div className="mt-1 text-sm text-gray-600">
               {product.pricing?.retailer_reason}
+
+              
             </div>
 
           </div>
 
+          <div className="mt-4 grid grid-cols-2 gap-3">
+
+                <div className="rounded-lg bg-gray-50 p-3">
+                  <div className="text-xs text-gray-500">Lowest Price</div>
+                  <div className="font-semibold">
+                    {product.pricing?.currency === "USD" ? "$" : "₹"}
+                    {product.pricing?.lowest_price}
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-gray-50 p-3">
+                  <div className="text-xs text-gray-500">Highest Price</div>
+                  <div className="font-semibold">
+                    {product.pricing?.currency === "USD" ? "$" : "₹"}
+                    {product.pricing?.highest_price}
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-gray-50 p-3">
+                  <div className="text-xs text-gray-500">Average Price</div>
+                  <div className="font-semibold">
+                    {product.pricing?.currency === "USD" ? "$" : "₹"}
+                    {product.pricing?.average_price}
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-green-50 p-3">
+                  <div className="text-xs text-gray-500">Predicted Price</div>
+                  <div className="font-semibold text-green-700">
+                    {product.pricing?.currency === "USD" ? "$" : "₹"}
+                    {product.pricing?.predicted_price}
+                  </div>
+                </div>
+
+              </div>
           <div>
 
             <div className="text-2xl font-bold">
@@ -177,6 +214,7 @@ export default function ProductPage() {
             </div>
 
           </div>
+
 
           {/* WHY SECTION */}
           <div className="bg-white rounded-xl p-4">
