@@ -559,35 +559,48 @@ export default function ResultsPage() {
                     </span>
                   </div>
 
-                  {/* PRICE CONFIDENCE */}
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+                  <div className="mt-3">
 
-                  <span>
-                    Price Confidence
-                  </span>
-                  <div className="flex items-center gap-1">
+                    <div className="flex justify-between text-xs mb-1">
 
-                    <span>
-                      {item.pricing?.confidence === "High"
-                        ? "🟢"
-                        : item.pricing?.confidence === "Medium"
-                        ? "🟡"
-                        : "🔴"}
-                    </span>
+                        <span className="text-gray-500">
+                            Recommendation Confidence
+                        </span>
 
-                    <span
-                      className={`font-medium ${
-                        item.pricing?.confidence === "High"
-                          ? "text-green-600"
-                          : item.pricing?.confidence === "Medium"
-                          ? "text-yellow-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {item.pricing?.confidence || "N/A"}
-                    </span>
+                        <span
+                            className={`font-semibold ${
+                                item.confidence?.level === "High"
+                                    ? "text-green-600"
+                                    : item.confidence?.level === "Medium"
+                                    ? "text-yellow-600"
+                                    : "text-red-600"
+                            }`}
+                        >
+                            {item.confidence?.score}% ({item.confidence?.level})
+                        </span>
 
-                  </div>
+                    </div>
+
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+
+                        <div
+                            className={`h-2 rounded-full ${
+                                item.confidence?.level === "High"
+                                    ? "bg-green-500"
+                                    : item.confidence?.level === "Medium"
+                                    ? "bg-yellow-500"
+                                    : "bg-red-500"
+                            }`}
+                            style={{
+                                width: `${item.confidence?.score || 0}%`,
+                            }}
+                        />
+
+                    </div>
+
+                    <p className="text-[11px] text-gray-500 italic mt-2">
+                        {item.confidence?.summary}
+                    </p>
 
                 </div>
 

@@ -196,7 +196,7 @@ export default function Dashboard() {
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
 
             <div className="bg-white p-4 rounded shadow-sm">
                 <p className="text-xs text-gray-700">Searches</p>
@@ -221,6 +221,30 @@ export default function Dashboard() {
                     ? Math.round(result[0].top_recommendation.score * 100)
                     : "--"}
                 </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm p-5">
+
+                <p className="text-sm text-gray-500">
+                    Avg Confidence
+                </p>
+
+                <p
+                    className={`text-3xl font-bold mt-2 ${
+                        result?.[0]?.top_recommendation?.confidence?.level === "High"
+                            ? "text-green-600"
+                            : result?.[0]?.top_recommendation?.confidence?.level === "Medium"
+                            ? "text-yellow-600"
+                            : "text-red-600"
+                    }`}
+                >
+                    {result?.[0]?.top_recommendation?.confidence?.score || "--"}%
+                </p>
+
+                <p className="text-xs text-gray-500 mt-2">
+                    {result?.[0]?.top_recommendation?.confidence?.level || "--"} Confidence
+                </p>
+
             </div>
 
           </div>
@@ -303,6 +327,8 @@ export default function Dashboard() {
             ))}
           </div>
 
+          
+
           <p className="text-sm font-medium mb-3 mt-6">
             Recent Activity
             </p>
@@ -323,9 +349,25 @@ export default function Dashboard() {
                     </p>
                     </div>
 
-                    <p className="text-sm font-semibold text-green-600">
-                    {Math.round(item?.top_recommendation?.score * 100)}
-                    </p>
+                    <div className="text-right">
+
+                        <p
+                            className={`text-sm font-semibold ${
+                                item.top_recommendation.confidence?.level === "High"
+                                    ? "text-green-600"
+                                    : item.top_recommendation.confidence?.level === "Medium"
+                                    ? "text-yellow-600"
+                                    : "text-red-600"
+                            }`}
+                        >
+                            {item.top_recommendation.confidence?.score}%
+                        </p>
+
+                        <p className="text-xs text-gray-500">
+                            Confidence
+                        </p>
+
+                    </div>
                 </div>
                 ))
             ) : (

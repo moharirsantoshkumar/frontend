@@ -232,6 +232,87 @@ export default function ProductPage() {
 
           </div>
 
+          {/* CONFIDENCE ANALYSIS */}
+
+          <div className="bg-white rounded-xl p-5 border">
+
+            <h2 className="font-semibold mb-4">
+              Why We're Confident
+            </h2>
+
+            <div className="flex items-center justify-between mb-3">
+
+              <div>
+
+                <p className="text-sm text-gray-500">
+                  Recommendation Confidence
+                </p>
+
+                <p
+                  className={`text-2xl font-bold ${
+                    product.confidence?.level === "High"
+                      ? "text-green-600"
+                      : product.confidence?.level === "Medium"
+                      ? "text-yellow-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {product.confidence?.score}% ({product.confidence?.level})
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+
+              <div
+                className={`h-2 rounded-full ${
+                  product.confidence?.level === "High"
+                    ? "bg-green-500"
+                    : product.confidence?.level === "Medium"
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
+                }`}
+                style={{
+                  width: `${product.confidence?.score || 0}%`,
+                }}
+              />
+
+            </div>
+
+            <p className="text-sm italic text-gray-600 mb-4">
+              {product.confidence?.summary}
+            </p>
+
+            <div className="space-y-3 mt-4">
+
+              {product.confidence?.factors?.map((factor, index) => (
+
+                <div
+                  key={index}
+                  className="flex items-center gap-3 text-sm py-1"
+                >
+                  <span
+                    className={
+                      product.confidence?.level === "High"
+                        ? "text-green-600"
+                        : product.confidence?.level === "Medium"
+                        ? "text-yellow-600"
+                        : "text-red-600"
+                    }
+                  >
+                    ✓
+                  </span>
+                  <span>{factor}</span>
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
           {/* RETAILER COMPARISON */}
           <div className="bg-white rounded-xl p-4">
 
