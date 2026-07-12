@@ -330,8 +330,8 @@ export default function Dashboard() {
           
 
           <p className="text-sm font-medium mb-3 mt-6">
-            Recent Activity
-            </p>
+            📈 Recent Activity
+          </p>
           <div className="space-y-3">
 
             {result?.length > 0 ? (
@@ -384,7 +384,7 @@ export default function Dashboard() {
           )}
 
           <p className="text-sm font-medium mb-3 mt-8">
-            Saved Products
+            ❤️ Saved Products
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

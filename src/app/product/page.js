@@ -164,8 +164,8 @@ export default function ProductPage() {
           {/* RETAIL INTELLIGENCE */}
           <div className="bg-white rounded-xl p-4">
 
-            <h2 className="font-semibold mb-3">
-              Retail Intelligence
+            <h2 className="font-semibold mb-4">
+            💰 Retail Intelligence
             </h2>
 
             <div className="grid grid-cols-3 gap-3 mb-4">
@@ -219,8 +219,8 @@ export default function ProductPage() {
           {/* WHY SECTION */}
           <div className="bg-white rounded-xl p-4">
 
-            <h2 className="font-semibold mb-2">
-              Why AI Recommended This
+            <h2 className="font-semibold mb-4">
+            🤖 Why AI Recommended This
             </h2>
 
             <p className="text-gray-600 text-sm leading-relaxed">
@@ -237,7 +237,7 @@ export default function ProductPage() {
           <div className="bg-white rounded-xl p-5 border">
 
             <h2 className="font-semibold mb-4">
-              Why We're Confident
+            🛡 Why We're Confident
             </h2>
 
             <div className="flex items-center justify-between mb-3">
@@ -316,49 +316,109 @@ export default function ProductPage() {
           {/* RETAILER COMPARISON */}
           <div className="bg-white rounded-xl p-4">
 
-            <h2 className="font-semibold mb-3">
-              Compare Retailers
+            <h2 className="font-semibold mb-4">
+            🛒 Compare Retailers
             </h2>
 
             <div className="space-y-2">
 
-              {product.retailers?.map((retailer, index) => (
+              {product.retailer_intelligence?.retailers?.map((r, index) => (
 
                 <div
-                  key={index}
-                  className="flex items-center justify-between border rounded-lg p-3"
+                    key={index}
+                    className="border rounded-xl p-4 mb-3 bg-white"
                 >
 
-                  <div>
+                    <div className="flex justify-between items-start">
 
-                    <div className="font-medium">
-                      {retailer.retailer}
+                        <div>
+
+                            <div className="flex items-center gap-2">
+
+                                <span className="font-semibold">
+                                    {r.retailer}
+                                </span>
+
+                                <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
+                                    {r.badge}
+                                </span>
+
+                            </div>
+
+                            <div className="text-xs text-gray-500 mt-1">
+                                Overall Retailer Score
+                            </div>
+
+                        </div>
+
+                        <div className="text-right">
+
+                            <div className="text-2xl font-bold text-green-600">
+                                {r.score}
+                            </div>
+
+                            <div className="text-xs text-gray-500">
+                                /100
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div className="text-xs text-gray-500">
-                      Seller: {retailer.seller}
+                    <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
+
+                        <div
+                            className="bg-green-500 h-2 rounded-full"
+                            style={{
+                                width: `${r.score}%`
+                            }}
+                        />
+
                     </div>
 
-                  </div>
+                    <div className="grid grid-cols-3 gap-3 mt-5 text-center">
 
-                  <div className="text-right">
+                        <div>
 
-                    <div className="font-semibold">
-                      {retailer.currency === "USD" ? "$" : "₹"}
-                      {retailer.price}
+                            <div className="text-xs text-gray-500">
+                                Trust
+                            </div>
+
+                            <div className="font-semibold">
+                                {r.trust_score}
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div className="text-xs text-gray-500">
+                                Delivery
+                            </div>
+
+                            <div className="font-semibold">
+                                {r.delivery_score}
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div className="text-xs text-gray-500">
+                                Value
+                            </div>
+
+                            <div className="font-semibold">
+                                {r.value_score}
+                            </div>
+
+                        </div>
+
                     </div>
-
-                    <div className="text-xs text-gray-500">
-                      {retailer.in_stock
-                        ? `${retailer.delivery_days} day(s)`
-                        : "Out of Stock"}
-                    </div>
-
-                  </div>
 
                 </div>
 
-              ))}
+                ))}
 
             </div>
 
@@ -368,8 +428,8 @@ export default function ProductPage() {
           {product.tradeoff_vs_next && (
             <div className="bg-green-50 rounded-xl p-4">
 
-              <h2 className="font-semibold mb-2 text-green-700">
-                AI Tradeoff Analysis
+              <h2 className="font-semibold mb-4 text-green-700">
+              ⚖ AI Tradeoff Analysis
               </h2>
 
               <p className="text-sm text-gray-700">

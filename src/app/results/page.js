@@ -438,6 +438,21 @@ export default function ResultsPage() {
                             </span>
 
                           </div>
+                          <div className="mt-3 rounded-lg bg-green-50 border border-green-100 p-3">
+
+                              <div className="text-xs text-green-700 font-semibold mb-1">
+                                  🏆 Best Overall Retailer
+                              </div>
+
+                              <div className="font-medium">
+                                  {item.retailer_intelligence?.best_retailer}
+                              </div>
+
+                              <div className="text-xs text-gray-600 mt-1">
+                                  {item.retailer_intelligence?.summary}
+                              </div>
+
+                          </div>
                           <div className="mt-2 text-[11px] text-gray-600 italic">
                             ✔ {item.pricing?.retailer_reason}
                           </div>
@@ -525,7 +540,7 @@ export default function ResultsPage() {
                       <div>
 
                           <div className="text-[10px] uppercase text-blue-600 font-semibold">
-                              AI Recommendation
+                              🤖 AI Recommendation
                           </div>
 
                           <div className="text-xs mt-1">
@@ -564,7 +579,7 @@ export default function ResultsPage() {
                     <div className="flex justify-between text-xs mb-1">
 
                         <span className="text-gray-500">
-                            Recommendation Confidence
+                            🛡 Recommendation Confidence
                         </span>
 
                         <span
@@ -622,7 +637,7 @@ export default function ResultsPage() {
 
                       {/* AI Insight Label */}
                       <div className="text-[10px] uppercase text-green-600 font-medium mb-1">
-                        AI Insight
+                        ✨ AI Insight
                       </div>
 
                       <span className="font-medium text-green-700">
