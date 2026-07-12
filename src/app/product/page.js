@@ -19,6 +19,7 @@ export default function ProductPage() {
 
     if (stored) {
         setProduct(JSON.parse(stored));
+        
     }
 
     }, []);
@@ -133,6 +134,92 @@ export default function ProductPage() {
               {product.pricing?.best_price ?? product.price}
             </div>
 
+            {/* SMART BUYING ADVISOR */}
+
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200 shadow-sm p-5 mt-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+
+                <div className="flex items-center justify-between">
+
+                    <div>
+
+                        <h2 className="font-semibold text-lg">
+                            🛒 Smart Buying Advisor
+                        </h2>
+
+                        <p className="text-sm text-gray-600 mt-1">
+                            {product.advisor?.summary}
+                        </p>
+
+                    </div>
+
+                    <div
+                        className={`px-4 py-2 rounded-full font-semibold ${
+                            product.advisor?.decision === "Buy Now"
+                                ? "bg-green-100 text-green-700"
+                                : product.advisor?.decision === "Good Time to Buy"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-red-100 text-red-700"
+                        }`}
+                    >
+                        {product.advisor?.decision}
+                    </div>
+
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+
+                    <div>
+
+                        <p className="text-xs text-gray-500">
+                            Deal Score
+                        </p>
+
+                        <p className="text-xl font-bold">
+                            {product.advisor?.deal_score}/100
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p className="text-xs text-gray-500">
+                            Wait Days
+                        </p>
+
+                        <p className="text-xl font-bold">
+                            {product.advisor?.wait_days}
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p className="text-xs text-gray-500">
+                            Risk of Waiting
+                        </p>
+
+                        <p className="text-xl font-bold">
+                            {product.advisor?.price_risk}
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <p className="text-xs text-gray-500">
+                            Sale Probability
+                        </p>
+
+                        <p className="text-xl font-bold">
+                            {product.advisor?.next_sale_probability}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
             <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
 
               <span>🏪</span>
@@ -229,6 +316,93 @@ export default function ProductPage() {
                 product.explanation || "--"}
 
             </p>
+
+          </div>
+
+          {/* AI CONSENSUS */}
+
+          <div className="bg-white rounded-xl border shadow-sm p-5 mt-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+
+              <h2 className="font-semibold mb-4">
+                  🧠 AI Consensus
+              </h2>
+
+              <div className="flex items-center justify-between mb-5">
+
+                  <div>
+
+                      <p className="text-sm text-gray-500">
+                          Agreement Score
+                      </p>
+
+                      <p className="text-3xl font-bold text-green-600">
+                          {product.consensus?.agreement_score}%
+                      </p>
+
+                  </div>
+
+                  <div className="text-right">
+
+                      <p className="text-sm font-semibold">
+                          {product.consensus?.majority_choice}
+                      </p>
+
+                      <p className="text-xs text-gray-500">
+                          Majority Recommendation
+                      </p>
+
+                  </div>
+
+              </div>
+
+              <p className="text-sm text-gray-600 mb-5">
+                  {product.consensus?.summary}
+              </p>
+
+              <div className="space-y-3">
+
+                  {product.consensus?.opinions?.map((opinion, index) => (
+
+                      <div
+                          key={index}
+                          className="border rounded-lg p-3 flex justify-between items-start"
+                      >
+
+                          <div>
+
+                              <div className="font-medium">
+                                  {opinion.model}
+                              </div>
+
+                              <div className="text-sm text-gray-600 mt-1">
+                                  {opinion.reasoning}
+                              </div>
+
+                          </div>
+
+                          <div>
+
+                              {opinion.agrees_with_final ? (
+
+                                  <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">
+                                      Agrees
+                                  </span>
+
+                              ) : (
+
+                                  <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">
+                                      Differs
+                                  </span>
+
+                              )}
+
+                          </div>
+
+                      </div>
+
+                  ))}
+
+              </div>
 
           </div>
 

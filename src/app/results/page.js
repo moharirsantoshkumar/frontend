@@ -655,6 +655,8 @@ export default function ResultsPage() {
                     <button
                       onClick={() => {
 
+                       
+
                         localStorage.setItem(
                           "selectedProduct",
                           JSON.stringify(item)
