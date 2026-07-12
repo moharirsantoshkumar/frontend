@@ -103,7 +103,7 @@ export default function Dashboard() {
         </div>
 
         {/* Search */}
-        <div className="flex-1 bg-gray-100 px-2 md:px-3 py-1.5 rounded-md text-xs md:text-sm">
+        <div className="flex-1 bg-gray-100 px-2 md:px-3 py-1.5 rounded-xl text-xs md:text-sm">
           Search any product...
         </div>
 
@@ -198,14 +198,14 @@ export default function Dashboard() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
 
-            <div className="bg-white p-4 rounded shadow-sm">
+            <div className="bg-white p-4 rounded-xl border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
                 <p className="text-xs text-gray-700">Searches</p>
                 <p className="text-xl font-semibold">
                 {result ? 1 : 0}
                 </p>
             </div>
 
-            <div className="bg-white p-4 rounded shadow-sm">
+            <div className="bg-white p-4 rounded-xl border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
                 <p className="text-xs text-gray-700">Items Shown</p>
                 <p className="text-xl font-semibold">
                 {result?.[0]?.alternatives?.length
@@ -214,7 +214,7 @@ export default function Dashboard() {
                 </p>
             </div>
 
-            <div className="bg-white p-4 rounded shadow-sm">
+            <div className="bg-white p-4 rounded-xl border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
                 <p className="text-xs text-gray-700">Top Score</p>
                 <p className="text-xl font-semibold">
                 {result?.[0]?.top_recommendation?.score
@@ -223,10 +223,10 @@ export default function Dashboard() {
                 </p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm p-5">
+            <div className="bg-white rounded-xl border shadow-sm p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
 
                 <p className="text-sm text-gray-500">
-                    Avg Confidence
+                  🛡 Avg Confidence
                 </p>
 
                 <p
@@ -253,7 +253,7 @@ export default function Dashboard() {
 
             {result?.[0]?.top_recommendation?.pricing && (
 
-            <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+            <div className="bg-white rounded-xl border shadow-sm p-5 mb-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
 
                 <h2 className="font-semibold mb-4">
                     Price Intelligence
@@ -338,7 +338,7 @@ export default function Dashboard() {
                 result.slice(0, 3)?.map((item, i) => (
                 <div
                     key={i}
-                    className="bg-white p-3 rounded border flex justify-between items-center"
+                    className="bg-white p-3 rounded-xl border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex justify-between items-center"
                 >
                     <div>
                     <p className="text-sm font-medium">
@@ -399,7 +399,7 @@ export default function Dashboard() {
 
                   <div
                     key={i}
-                    className="bg-white rounded-xl border p-4"
+                    className="bg-white rounded-xl border shadow-sm p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-200"
                   >
 
                     <img

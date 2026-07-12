@@ -164,7 +164,7 @@ export default function ResultsPage() {
           </div>
 
           {/* SEARCH BAR */}
-          <div className="flex-1 flex items-center bg-gray-100 rounded-md px-2 md:px-3 py-1.5">
+          <div className="flex-1 flex items-center bg-gray-100 rounded-xl px-2 md:px-3 py-1.5">
             <span className="Black text-sm mr-2">🔍</span>
             <input
               type="text"
@@ -338,7 +338,7 @@ export default function ResultsPage() {
           <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg">
             <button
               onClick={() => setIsDrawerOpen(false)}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md"
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl"
             >
               Apply Filters
             </button>
@@ -378,7 +378,7 @@ export default function ResultsPage() {
             <div className="md:hidden mb-3">
               <button
                 onClick={() => setIsDrawerOpen(true)}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md"
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-xl"
               >
                 Filters
               </button>
@@ -596,7 +596,7 @@ export default function ResultsPage() {
 
                     </div>
 
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
 
                         <div
                             className={`h-2 rounded-full ${
@@ -662,7 +662,7 @@ export default function ResultsPage() {
 
                         router.push("/product");
                       }}
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-md transition"
+                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
                     >
                       View →
                     </button>
@@ -794,7 +794,7 @@ export default function ResultsPage() {
 
             <button
               onClick={() => router.push("/compare")}
-              className="bg-green-600 text-white px-4 py-2 rounded-xl"
+              className="border border-gray-300 hover:border-green-600 hover:text-green-600 px-4 py-2 rounded-lg transition-all duration-200"
             >
               Compare Now
             </button>

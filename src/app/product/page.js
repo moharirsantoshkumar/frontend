@@ -162,7 +162,7 @@ export default function ProductPage() {
           </div>
 
           {/* RETAIL INTELLIGENCE */}
-          <div className="bg-white rounded-xl p-4">
+          <div className="bg-white rounded-xl border shadow-sm p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
 
             <h2 className="font-semibold mb-4">
             💰 Retail Intelligence
@@ -217,7 +217,7 @@ export default function ProductPage() {
 
 
           {/* WHY SECTION */}
-          <div className="bg-white rounded-xl p-4">
+          <div className="bg-white rounded-xl border shadow-sm p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
 
             <h2 className="font-semibold mb-4">
             🤖 Why AI Recommended This
@@ -234,7 +234,7 @@ export default function ProductPage() {
 
           {/* CONFIDENCE ANALYSIS */}
 
-          <div className="bg-white rounded-xl p-5 border">
+          <div className="bg-white rounded-xl border shadow-sm p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
 
             <h2 className="font-semibold mb-4">
             🛡 Why We're Confident
@@ -326,7 +326,7 @@ export default function ProductPage() {
 
                 <div
                     key={index}
-                    className="border rounded-xl p-4 mb-3 bg-white"
+                    className="bg-white border rounded-xl shadow-sm p-4 mb-3 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
                 >
 
                     <div className="flex justify-between items-start">
@@ -426,7 +426,7 @@ export default function ProductPage() {
 
           {/* TRADEOFF */}
           {product.tradeoff_vs_next && (
-            <div className="bg-green-50 rounded-xl p-4">
+            <div className="bg-green-50 rounded-xl border border-green-200 shadow-sm p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
 
               <h2 className="font-semibold mb-4 text-green-700">
               ⚖ AI Tradeoff Analysis
